@@ -105,7 +105,7 @@ public class DeleteRecordDialog {
 
         radioGroup = new ButtonGroup();
         radioGroup.add(byAddressAndPhoneNumber);
-        //radioGroup.add(byLastNameAndNumber);
+        radioGroup.add(byLastNameAndNumber);
         radioGroup.add(byLastNameAndPhoneNumber);
 
 
@@ -123,7 +123,7 @@ public class DeleteRecordDialog {
         panelInput.add(phoneNumberField);
 
         radioPanel.add(byLastNameAndPhoneNumber);
-        //radioPanel.add(byLastNameAndNumber);
+        radioPanel.add(byLastNameAndNumber);
         radioPanel.add(byAddressAndPhoneNumber);
 
 
