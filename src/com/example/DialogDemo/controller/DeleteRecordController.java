@@ -124,8 +124,8 @@ public class DeleteRecordController extends FindRecordController{
                             tableView.lastPage--;
                         }
                         tableController.viewPage(1, tableView, model);
-                        tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
-                        tableView.numberOfRecordsLabel.repaint();
+                        //tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
+                        //tableView.numberOfRecordsLabel.repaint();
                         mainWindow.mainFrame.validate();
                         foundRecordsNumber++;
                     }
@@ -133,7 +133,7 @@ public class DeleteRecordController extends FindRecordController{
             }
 
             if (deleteRecordDialog.byLastNameAndNumber.isSelected()){
-                if (deleteRecordDialog.lastNameField.getText().equals("") || deleteRecordDialog.phoneNumberField.getText().equals("")){
+                if (deleteRecordDialog.lastNameField.getText().equals("") && deleteRecordDialog.phoneNumberField.getText().equals("")){
                     JOptionPane.showMessageDialog(new JFrame(), "Please fill in fields.");
                     return;
                 }
@@ -155,8 +155,8 @@ public class DeleteRecordController extends FindRecordController{
                             tableView.lastPage--;
                         }
                         tableController.viewPage(1, tableView, model);
-                        tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
-                        tableView.numberOfRecordsLabel.repaint();
+                        //tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
+                        //tableView.numberOfRecordsLabel.repaint();
                         mainWindow.mainFrame.validate();
                         foundRecordsNumber++;
                     }

@@ -74,27 +74,27 @@ public class PageController {
 
 
     }
-    public void nextPage(MainWindow view, Page tableView, int currentPage){
-       // viewPage(currentPage+1, tableView);
+    public void nextPage(MainWindow view, Page tableView, Database model){
+        viewPage(tableView.currentPage+1, tableView, model);
         view.previousPage.setEnabled(true);
         view.firstPage.setEnabled(true);
     }
 
-    public void previousPage(MainWindow view, Page tableView, int currentPage){
-       // viewPage(currentPage-1, tableView, model);
+    public void previousPage(MainWindow view, Page tableView, Database model){
+        viewPage(tableView.currentPage-1, tableView, model);
         view.nextPage.setEnabled(true);
         view.lastPage.setEnabled(true);
     }
 
-    public void firstPage(MainWindow view, Page tableView){
-        //viewPage(1, tableView);
+    public void firstPage(MainWindow view, Page tableView, Database model){
+        viewPage(1, tableView, model);
         view.nextPage.setEnabled(true);
         view.lastPage.setEnabled(true);
         view.previousPage.setEnabled(false);
     }
 
-    public void lastPage(MainWindow view, Page tableView){
-        //viewPage(tableView.btnLastPage, tableView);
+    public void lastPage(MainWindow view, Page tableView, Database model){
+        viewPage(tableView.lastPage, tableView, model);
         view.nextPage.setEnabled(false);
         view.lastPage.setEnabled(false);
         view.previousPage.setEnabled(true);

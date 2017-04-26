@@ -47,10 +47,10 @@ public class MainController {
         view.saveFileBtn.addActionListener(saveFileActionListener);
         view.openFile.addActionListener(openFileActionListener);
         view.openFileBtn.addActionListener(openFileActionListener);
-        //view.nextPage.addActionListener(nextPageActionListener);
-        //view.previousPage.addActionListener(previousPageActionListener);
-        //view.firstPage.addActionListener(firstPageActionListener);
-        //view.lastPage.addActionListener(lastPageActionListener);
+        view.nextPage.addActionListener(nextPageActionListener);
+        view.previousPage.addActionListener(previousPageActionListener);
+        view.firstPage.addActionListener(firstPageActionListener);
+        view.lastPage.addActionListener(lastPageActionListener);
 
 
         //addRecordController = new AddRecordController(view, model, addRecordDialog, tableView, tableModel, tableController);
@@ -194,7 +194,7 @@ public class MainController {
         @Override
         public void actionPerformed(ActionEvent e){
             tableView.lastPage = model.recordList.size() / 10 + 1;
-            tableController.nextPage(view, tableView, tableView.currentPage);
+            tableController.nextPage(view, tableView, model);
             tableView.currentPage++;
             if (tableView.currentPage == tableView.lastPage){
                 view.nextPage.setEnabled(false);
@@ -207,7 +207,7 @@ public class MainController {
     ActionListener previousPageActionListener = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e){
-            tableController.previousPage(view, tableView, tableView.currentPage);
+            tableController.previousPage(view, tableView, model);
             tableView.currentPage--;
             view.nextPage.setEnabled(true);
             view.lastPage.setEnabled(true);
@@ -223,7 +223,7 @@ public class MainController {
     ActionListener firstPageActionListener = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e){
-            tableController.firstPage(view, tableView);
+            tableController.firstPage(view, tableView, model);
             tableView.currentPage = 1;
             view.firstPage.setEnabled(false);
             view.mainFrame.validate();
@@ -234,7 +234,7 @@ public class MainController {
         @Override
         public void actionPerformed(ActionEvent e){
             tableView.lastPage = model.recordList.size() / 10 + 1;
-            tableController.lastPage(view, tableView);
+            tableController.lastPage(view, tableView, model);
             tableView.currentPage = tableView.lastPage;
             view.mainFrame.validate();
         }
