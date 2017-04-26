@@ -15,8 +15,6 @@ public class Page {
     public int currentPage;
     public int lastPage;
     public JPanel panel;
-    public JButton btnLastPage;
-    public JLabel numberOfRecordsLabel;
 
     public Page(){
         DefaultTableModel tableModel = new DefaultTableModel(10, tableHeading.length);
@@ -25,6 +23,8 @@ public class Page {
         scrollPanel = new JScrollPane(table);
         table.setPreferredScrollableViewportSize(new Dimension(700, 400));
         table.setEnabled(false);
+
+
         currentPage = 1;
         lastPage = 1;
         panel = new JPanel();

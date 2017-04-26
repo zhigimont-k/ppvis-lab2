@@ -32,11 +32,15 @@ public class MainWindow {
     public JMenuItem findRecord;
     public JMenuItem deleteRecords;
     public String title = "PPvIS lab 2";
-    public JButton nextPage;
-    public JButton previousPage;
-    public JButton firstPage;
-    public JButton lastPage;
+    public JPanel pagingPanel;
+
+    public JButton btnNextPage;
+    public JButton btnPreviousPage;
+    public JButton btnFirstPage;
+    public JButton btnLastPage;
     public JLabel numberOfRecordsLabel;
+    public JLabel currentPageLabel;
+    public JPanel pagingBtnPanel;
 
 
     public MainWindow(Page tableView, PageController tableController){
@@ -58,7 +62,6 @@ public class MainWindow {
 
         toolBar = new JToolBar("Tools", JToolBar.HORIZONTAL);
 
-        numberOfRecordsLabel = new JLabel("Records in database: ");
 
         java.net.URL newFileIconURL = getClass().getResource("images/newIcon.png");
         java.net.URL openFileIconURL = getClass().getResource("images/openFileIcon.png");
@@ -92,18 +95,6 @@ public class MainWindow {
         exitBtn.setToolTipText("Exit");
 
 
-        nextPage = new JButton("Next >");
-        nextPage.setEnabled(false);
-
-        previousPage = new JButton ("< Prev");
-        previousPage.setEnabled(false);
-
-        firstPage = new JButton("<< First");
-        firstPage.setEnabled(false);
-
-        lastPage = new JButton(">> Last");
-        lastPage.setEnabled(false);
-
         toolBar.add(newFileBtn);
         toolBar.add(openFileBtn);
         toolBar.add(saveFileBtn);
@@ -114,10 +105,41 @@ public class MainWindow {
         toolBar.addSeparator();
         toolBar.add(exitBtn);
         toolBar.addSeparator();
-        toolBar.add(firstPage);
-        toolBar.add(previousPage);
-        toolBar.add(nextPage);
-        toolBar.add(lastPage);
+
+        pagingPanel = new JPanel();
+        pagingPanel.setLayout(new BoxLayout(pagingPanel, BoxLayout.Y_AXIS));
+        pagingPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        pagingPanel.setAlignmentX(Component.BOTTOM_ALIGNMENT);
+        //pagingPanel.setLocation(0, 200);
+
+        pagingBtnPanel = new JPanel();
+        pagingBtnPanel.setLayout(new BoxLayout(pagingBtnPanel, BoxLayout.X_AXIS));
+        pagingBtnPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+        pagingBtnPanel.setAlignmentX(Component.BOTTOM_ALIGNMENT);
+
+        numberOfRecordsLabel = new JLabel("Records in database: ");
+        currentPageLabel = new JLabel("Page: ");
+
+        btnNextPage = new JButton("Next >");
+        btnNextPage.setEnabled(false);
+
+        btnPreviousPage = new JButton ("< Prev");
+        btnPreviousPage.setEnabled(false);
+
+        btnFirstPage = new JButton("<< First");
+        btnFirstPage.setEnabled(false);
+
+        btnLastPage = new JButton(">> Last");
+        btnLastPage.setEnabled(false);
+
+        pagingBtnPanel.add(btnFirstPage);
+        pagingBtnPanel.add(btnPreviousPage);
+        pagingBtnPanel.add(currentPageLabel);
+        pagingBtnPanel.add(btnNextPage);
+        pagingBtnPanel.add(btnLastPage);
+
+        pagingPanel.add(numberOfRecordsLabel);
+        pagingPanel.add(pagingBtnPanel);
 
         newFile = new JMenuItem("New", KeyEvent.VK_N);
         newFile.setAccelerator(
@@ -181,8 +203,11 @@ public class MainWindow {
 
         mainFrame.setJMenuBar(menuBar);
         mainFrame.add(toolBar, BorderLayout.NORTH);
-        mainFrame.add(numberOfRecordsLabel);
+        //mainFrame.add(numberOfRecordsLabel);
 
+
+
+        mainFrame.add(pagingPanel);
 
 
         mainFrame.setVisible(true);

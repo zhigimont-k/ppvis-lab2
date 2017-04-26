@@ -45,6 +45,12 @@ public class PageController {
         //JTable tablePage = new JTable();
         int rowIndex = 0;
         //int rowIndex = Database.recordList.size() - 1;
+
+        if (model.recordList.size() % 10 == 0 && model.recordList.size() != 0){
+            view.lastPage = model.recordList.size() / 10;
+        } else {
+            view.lastPage = model.recordList.size() / 10 + 1;
+        }
         for (int recordIndex = (page-1)*10; recordIndex < page*10; recordIndex++){
             if (recordIndex < model.recordList.size()){
                 StudentRecord record = model.recordList.get(recordIndex);
@@ -73,32 +79,56 @@ public class PageController {
 
 
 
+
     }
     public void nextPage(MainWindow view, Page tableView, Database model){
         viewPage(tableView.currentPage+1, tableView, model);
-        view.previousPage.setEnabled(true);
-        view.firstPage.setEnabled(true);
+        ++tableView.currentPage;
+        view.btnPreviousPage.setEnabled(true);
+        view.btnFirstPage.setEnabled(true);
+
+        if (tableView.currentPage == tableView.lastPage){
+            view.btnNextPage.setEnabled(false);
+            view.btnLastPage.setEnabled(false);
+        }
+        view.currentPageLabel.setText("Page: "+tableView.currentPage);
     }
 
     public void previousPage(MainWindow view, Page tableView, Database model){
         viewPage(tableView.currentPage-1, tableView, model);
-        view.nextPage.setEnabled(true);
-        view.lastPage.setEnabled(true);
+        --tableView.currentPage;
+        view.btnNextPage.setEnabled(true);
+        view.btnLastPage.setEnabled(true);
+
+        if (tableView.currentPage == 1){
+            view.btnPreviousPage.setEnabled(false);
+            view.btnFirstPage.setEnabled(false);
+        }
+
+        view.currentPageLabel.setText("Page: "+tableView.currentPage);
     }
 
     public void firstPage(MainWindow view, Page tableView, Database model){
         viewPage(1, tableView, model);
-        view.nextPage.setEnabled(true);
-        view.lastPage.setEnabled(true);
-        view.previousPage.setEnabled(false);
+        tableView.currentPage = 1;
+        view.btnNextPage.setEnabled(true);
+        view.btnLastPage.setEnabled(true);
+        view.btnPreviousPage.setEnabled(false);
+        view.btnFirstPage.setEnabled(false);
+
+
+        view.currentPageLabel.setText("Page: "+tableView.currentPage);
     }
 
     public void lastPage(MainWindow view, Page tableView, Database model){
         viewPage(tableView.lastPage, tableView, model);
-        view.nextPage.setEnabled(false);
-        view.lastPage.setEnabled(false);
-        view.previousPage.setEnabled(true);
-        view.firstPage.setEnabled(true);
+
+        tableView.currentPage = tableView.lastPage;
+        view.btnNextPage.setEnabled(false);
+        view.btnLastPage.setEnabled(false);
+        view.btnPreviousPage.setEnabled(true);
+        view.btnFirstPage.setEnabled(true);
+        view.currentPageLabel.setText("Page: "+tableView.currentPage);
     }
 
 }

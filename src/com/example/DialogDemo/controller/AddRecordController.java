@@ -61,12 +61,6 @@ public class AddRecordController {
             Database.addRecordToDatabase(addedRecord, model.recordList);
             //tableController.addRecordToTable(addedRecord, tableModel, tableView);
 
-            if (model.recordList.size() % 10 == 1){
-                tableView.lastPage++;
-                mainWindow.nextPage.setEnabled(true);
-                mainWindow.lastPage.setEnabled(true);
-                mainWindow.mainFrame.validate();}
-
             tableController.viewPage(tableView.currentPage, tableView, model);
 
             mainWindow.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());

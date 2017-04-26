@@ -47,10 +47,10 @@ public class MainController {
         view.saveFileBtn.addActionListener(saveFileActionListener);
         view.openFile.addActionListener(openFileActionListener);
         view.openFileBtn.addActionListener(openFileActionListener);
-        view.nextPage.addActionListener(nextPageActionListener);
-        view.previousPage.addActionListener(previousPageActionListener);
-        view.firstPage.addActionListener(firstPageActionListener);
-        view.lastPage.addActionListener(lastPageActionListener);
+        view.btnNextPage.addActionListener(nextPageActionListener);
+        view.btnPreviousPage.addActionListener(previousPageActionListener);
+        view.btnFirstPage.addActionListener(firstPageActionListener);
+        view.btnLastPage.addActionListener(lastPageActionListener);
 
 
         //addRecordController = new AddRecordController(view, model, addRecordDialog, tableView, tableModel, tableController);
@@ -58,26 +58,31 @@ public class MainController {
 
     ActionListener newFileActionListener = new ActionListener(){
         @Override
-        public void actionPerformed(ActionEvent e){
-            tableView.table = tableController.makeEmptyTable();
-            /*for (int rowIndex = 0; rowIndex < Database.recordList.size(); rowIndex++){
-                for (int columnIndex = 0; columnIndex < 8; columnIndex++){
-                    tableView.table.getModel().setValueAt("", rowIndex, columnIndex);
-                }
-            }*/
+        public void actionPerformed(ActionEvent e){for (int rowIndex = 0; rowIndex < 10; rowIndex++){
+            for (int columnIndex = 0; columnIndex < 8; columnIndex++){
+                tableView.table.getModel().setValueAt("", rowIndex, columnIndex);
+            }
+        }
             for (int index = model.recordList.size() - 1; index >=0; index--){
                 model.recordList.remove(index);
             }
-            view.mainFrame.add(tableView.scrollPanel, BorderLayout.CENTER);
-
-            //view.mainFrame.add(view.btnNextPage);
+            view.pagingPanel.add(tableView.scrollPanel);
             tableController.tableCreated = true;
-            view.mainFrame.setTitle(view.title + " - New file");
-            view.numberOfRecordsLabel.setText("Records in database: 0");
-            view.numberOfRecordsLabel.repaint();
-            view.mainFrame.validate();
-
             System.out.println("Empty table created!");
+            //tableView.currentPage = 0;
+            tableController.viewPage(1, tableView, model);
+
+            if (model.recordList.size() > 10) {
+                view.btnNextPage.setEnabled(true);
+                view.btnLastPage.setEnabled(true);
+            }
+            view.pagingPanel.repaint();
+            view.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
+            view.currentPageLabel.setText("Page: "+tableView.currentPage);
+            view.mainFrame.setTitle(view.title + " - New file");
+            view.pagingPanel.repaint();
+
+            view.mainFrame.validate();
         }
     };
 
@@ -111,7 +116,9 @@ public class MainController {
                 System.out.println("AddRecordDialog created!");
                 AddRecordController addRecordController = new AddRecordController(view, model, addRecordDialog,
                         tableView, tableModel, tableController);
+                tableController.lastPage(view, tableView, model);
                 view.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
+                view.pagingPanel.repaint();
 
                 view.mainFrame.validate();
                 System.out.println("AddRecordController created!");
@@ -173,7 +180,7 @@ public class MainController {
             for (int index = model.recordList.size() - 1; index >=0; index--){
                 model.recordList.remove(index);
             }
-            view.mainFrame.add(tableView.scrollPanel, BorderLayout.CENTER);
+            view.pagingPanel.add(tableView.scrollPanel);
             tableController.tableCreated = true;
             System.out.println("Empty table created!");
             FileOpen file = new FileOpen(view, tableView, model);
@@ -181,10 +188,13 @@ public class MainController {
             tableController.viewPage(1, tableView, model);
 
             if (model.recordList.size() > 10) {
-                view.nextPage.setEnabled(true);
-                view.lastPage.setEnabled(true);
+                view.btnNextPage.setEnabled(true);
+                view.btnLastPage.setEnabled(true);
             }
+            view.pagingPanel.repaint();
             view.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
+            view.currentPageLabel.setText("Page: "+tableView.currentPage);
+            view.pagingPanel.repaint();
 
             view.mainFrame.validate();
         }
@@ -193,13 +203,7 @@ public class MainController {
     ActionListener nextPageActionListener = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e){
-            tableView.lastPage = model.recordList.size() / 10 + 1;
             tableController.nextPage(view, tableView, model);
-            tableView.currentPage++;
-            if (tableView.currentPage == tableView.lastPage){
-                view.nextPage.setEnabled(false);
-                view.lastPage.setEnabled(false);
-            }
             view.mainFrame.validate();
         }
     };
@@ -208,15 +212,7 @@ public class MainController {
         @Override
         public void actionPerformed(ActionEvent e){
             tableController.previousPage(view, tableView, model);
-            tableView.currentPage--;
-            view.nextPage.setEnabled(true);
-            view.lastPage.setEnabled(true);
             view.mainFrame.validate();
-            if (tableView.currentPage == 1){
-                view.previousPage.setEnabled(false);
-                view.firstPage.setEnabled(false);
-                view.mainFrame.validate();
-            }
         }
     };
 
@@ -224,8 +220,6 @@ public class MainController {
         @Override
         public void actionPerformed(ActionEvent e){
             tableController.firstPage(view, tableView, model);
-            tableView.currentPage = 1;
-            view.firstPage.setEnabled(false);
             view.mainFrame.validate();
         }
     };
@@ -233,9 +227,7 @@ public class MainController {
     ActionListener lastPageActionListener = new ActionListener(){
         @Override
         public void actionPerformed(ActionEvent e){
-            tableView.lastPage = model.recordList.size() / 10 + 1;
             tableController.lastPage(view, tableView, model);
-            tableView.currentPage = tableView.lastPage;
             view.mainFrame.validate();
         }
     };

@@ -117,16 +117,8 @@ public class DeleteRecordController extends FindRecordController{
                                 {"","","","","","","",""});
                         addRecordToTable(model.recordList.get(recordIndex),
                                 deleteRecordDialog.table, foundRecordsNumber);
-                        tableController.viewPage(1, tableView, model);
                         model.recordList.remove(recordIndex);
                         recordIndex--;
-                        if (model.recordList.size() % 10 == 0){
-                            tableView.lastPage--;
-                        }
-                        tableController.viewPage(1, tableView, model);
-                        //tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
-                        //tableView.numberOfRecordsLabel.repaint();
-                        mainWindow.mainFrame.validate();
                         foundRecordsNumber++;
                     }
                 }
@@ -138,26 +130,18 @@ public class DeleteRecordController extends FindRecordController{
                     return;
                 }
                 for (int recordIndex = 0; recordIndex < model.recordList.size(); recordIndex++){
-                    if (deleteRecordDialog.lastNameField.getText().equals
-                            (model.recordList.get(recordIndex).getLastName()) ||
-                            model.recordList.get(recordIndex).getPhoneNumber().contains(deleteRecordDialog.phoneNumberField.getText()) ||
-                            model.recordList.get(recordIndex).getMobilePhoneNumber().contains(deleteRecordDialog.phoneNumberField.getText())){
+                    if (deleteRecordDialog.lastNameField.getText().equals(model.recordList.get(recordIndex).getLastName()) ||
+                            (!deleteRecordDialog.phoneNumberField.getText().equals("") &&
+                                    (model.recordList.get(recordIndex).getPhoneNumber().contains(deleteRecordDialog.phoneNumberField.getText()) ||
+                            model.recordList.get(recordIndex).getMobilePhoneNumber().contains(deleteRecordDialog.phoneNumberField.getText())))){
                         deleteRecordDialog.tableModel.addRow(new Object[]
                                 {"","","","","","","",""});
                         addRecordToTable(model.recordList.get(recordIndex),
                                 deleteRecordDialog.table, foundRecordsNumber);
 
-                        tableController.viewPage(1, tableView, model);
                         model.recordList.remove(recordIndex);
                         recordIndex--;
-                        JOptionPane.showMessageDialog(new JFrame(), model.recordList.size());
-                        if (model.recordList.size() % 10 == 0){
-                            tableView.lastPage--;
-                        }
-                        tableController.viewPage(1, tableView, model);
-                        //tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
-                        //tableView.numberOfRecordsLabel.repaint();
-                        mainWindow.mainFrame.validate();
+
                         foundRecordsNumber++;
                     }
                 }
@@ -183,16 +167,8 @@ public class DeleteRecordController extends FindRecordController{
                                 {"","","","","","","",""});
                         addRecordToTable(model.recordList.get(recordIndex),
                                 deleteRecordDialog.table, foundRecordsNumber);
-                        tableController.viewPage(1, tableView, model);
                         model.recordList.remove(recordIndex);
                         recordIndex--;
-                        if (model.recordList.size() % 10 == 0){
-                            tableView.lastPage--;
-                        }
-                        //tableController.viewPage(1, tableView, model);
-                        //tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
-                        //tableView.numberOfRecordsLabel.repaint();
-                        mainWindow.mainFrame.validate();
                         foundRecordsNumber++;
                     }
                 }
@@ -202,6 +178,17 @@ public class DeleteRecordController extends FindRecordController{
                 JOptionPane.showMessageDialog(new JFrame(), "No records found.");
                 return;
             }
+
+            tableController.firstPage(mainWindow, tableView, model);
+            if (tableView.lastPage == 1){
+                mainWindow.btnNextPage.setEnabled(false);
+                mainWindow.btnLastPage.setEnabled(false);
+                mainWindow.btnPreviousPage.setEnabled(false);
+                mainWindow.btnFirstPage.setEnabled(false);
+            }
+            mainWindow.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
+            mainWindow.pagingPanel.repaint();
+            mainWindow.mainFrame.validate();
             JOptionPane.showMessageDialog(new JFrame(), "Deleted records from database: "+foundRecordsNumber);
         }
     };

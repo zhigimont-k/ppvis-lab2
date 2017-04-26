@@ -132,10 +132,10 @@ public class FindRecordController {
                     return;
                 }
                 for (int recordIndex = 0; recordIndex < model.recordList.size(); recordIndex++){
-                    if (findRecordDialog.lastNameField.getText().equals
-                            (model.recordList.get(recordIndex).getLastName()) ||
-                            model.recordList.get(recordIndex).getPhoneNumber().contains(findRecordDialog.phoneNumberField.getText()) ||
-                            model.recordList.get(recordIndex).getMobilePhoneNumber().contains(findRecordDialog.phoneNumberField.getText())){
+                    if (findRecordDialog.lastNameField.getText().equals(model.recordList.get(recordIndex).getLastName()) ||
+                            (!findRecordDialog.phoneNumberField.getText().equals("") &&
+                                    (model.recordList.get(recordIndex).getPhoneNumber().contains(findRecordDialog.phoneNumberField.getText()) ||
+                                            model.recordList.get(recordIndex).getMobilePhoneNumber().contains(findRecordDialog.phoneNumberField.getText())))){
                         findRecordDialog.tableModel.addRow(new Object[]
                                 {"","","","","","","",""});
                         addRecordToTable(model.recordList.get(recordIndex),
