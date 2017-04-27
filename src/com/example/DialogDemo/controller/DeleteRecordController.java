@@ -98,10 +98,6 @@ public class DeleteRecordController extends FindRecordController{
     ActionListener deleteRecordActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            for( int index = deleteRecordDialog.tableModel.getRowCount() - 1; index >= 0; index-- )
-            {
-                deleteRecordDialog.tableModel.removeRow(index);
-            }
             foundRecordsNumber = 0;
             if (deleteRecordDialog.byLastNameAndPhoneNumber.isSelected()){
                 if (deleteRecordDialog.lastNameField.getText().equals("") && deleteRecordDialog.phoneNumberField.getText().equals("")){
@@ -113,10 +109,6 @@ public class DeleteRecordController extends FindRecordController{
                             (model.recordList.get(recordIndex).getLastName()) ||
                             deleteRecordDialog.phoneNumberField.getText().equals
                                     (model.recordList.get(recordIndex).getPhoneNumber())){
-                        deleteRecordDialog.tableModel.addRow(new Object[]
-                                {"","","","","","","",""});
-                        addRecordToTable(model.recordList.get(recordIndex),
-                                deleteRecordDialog.table, foundRecordsNumber);
                         model.recordList.remove(recordIndex);
                         recordIndex--;
                         foundRecordsNumber++;
@@ -134,10 +126,6 @@ public class DeleteRecordController extends FindRecordController{
                             (!deleteRecordDialog.phoneNumberField.getText().equals("") &&
                                     (model.recordList.get(recordIndex).getPhoneNumber().contains(deleteRecordDialog.phoneNumberField.getText()) ||
                             model.recordList.get(recordIndex).getMobilePhoneNumber().contains(deleteRecordDialog.phoneNumberField.getText())))){
-                        deleteRecordDialog.tableModel.addRow(new Object[]
-                                {"","","","","","","",""});
-                        addRecordToTable(model.recordList.get(recordIndex),
-                                deleteRecordDialog.table, foundRecordsNumber);
 
                         model.recordList.remove(recordIndex);
                         recordIndex--;
@@ -163,10 +151,6 @@ public class DeleteRecordController extends FindRecordController{
                             deleteRecordDialog.flatField.getText().equals(model.recordList.get(recordIndex).address.getFlat()+"") ||
                             deleteRecordDialog.phoneNumberField.getText().equals
                                     (model.recordList.get(recordIndex).getPhoneNumber())){
-                        deleteRecordDialog.tableModel.addRow(new Object[]
-                                {"","","","","","","",""});
-                        addRecordToTable(model.recordList.get(recordIndex),
-                                deleteRecordDialog.table, foundRecordsNumber);
                         model.recordList.remove(recordIndex);
                         recordIndex--;
                         foundRecordsNumber++;
@@ -179,15 +163,15 @@ public class DeleteRecordController extends FindRecordController{
                 return;
             }
 
-            tableController.firstPage(mainWindow, tableView, model);
+            tableController.firstPage(tableView, model);
             if (tableView.lastPage == 1){
-                mainWindow.btnNextPage.setEnabled(false);
-                mainWindow.btnLastPage.setEnabled(false);
-                mainWindow.btnPreviousPage.setEnabled(false);
-                mainWindow.btnFirstPage.setEnabled(false);
+                tableView.btnNextPage.setEnabled(false);
+                tableView.btnLastPage.setEnabled(false);
+                tableView.btnPreviousPage.setEnabled(false);
+                tableView.btnFirstPage.setEnabled(false);
             }
-            mainWindow.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
-            mainWindow.pagingPanel.repaint();
+            tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
+            tableView.pagingPanel.repaint();
             mainWindow.mainFrame.validate();
             JOptionPane.showMessageDialog(new JFrame(), "Deleted records from database: "+foundRecordsNumber);
         }

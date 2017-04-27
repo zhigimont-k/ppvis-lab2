@@ -1,5 +1,7 @@
 package com.example.DialogDemo.view;
 
+import com.example.DialogDemo.view.table.view.Page;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -10,12 +12,14 @@ import java.awt.*;
 public class DeleteRecordDialog {
 
     public JDialog dialog;
-    public JTable table;
+    //public JTable table;
     public DefaultTableModel tableModel;
     String[] tableHeading = {"First name",
             "Last name", "City", "Street", "House", "Flat", "Mobile phone number", "Phone number"};
     public JButton btnFind;
     public JButton btnCancel;
+
+    //public Page tableView;
     public ButtonGroup radioGroup;
     public JRadioButton byLastNameAndPhoneNumber;
     public JRadioButton byAddressAndPhoneNumber;
@@ -37,15 +41,15 @@ public class DeleteRecordDialog {
     public JLabel houseLabel;
     public JLabel flatLabel;
     public JLabel phoneNumberLabel;
-    public JLabel resultLabel;
-    public JPanel panelResult;
+    //public JLabel resultLabel;
+    //public JPanel panelResult;
     public JScrollPane scrollPanel;
 
     public DeleteRecordDialog(MainWindow mainWindow){
         dialog = new JDialog(mainWindow.mainFrame, "Find and delete records", false);
 
         dialog.setLayout(new FlowLayout());
-        dialog.setSize(800, 600);
+        dialog.setSize(300, 400);
         dialog.setResizable(false);
 
 
@@ -57,9 +61,6 @@ public class DeleteRecordDialog {
         panelSearch.setLayout(new BoxLayout(panelSearch, BoxLayout.Y_AXIS));
         panelSearch.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        panelResult = new JPanel();
-        panelResult.setLayout(new BoxLayout(panelResult, BoxLayout.Y_AXIS));
-        panelResult.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         panelInput = new JPanel();
         panelInput.setLayout(new BoxLayout(panelInput, BoxLayout.Y_AXIS));
@@ -90,18 +91,7 @@ public class DeleteRecordDialog {
         flatLabel = new JLabel("Flat: ");
         phoneNumberLabel = new JLabel("Phone number: ");
 
-        resultLabel = new JLabel("Search result:\n");
-        panelResult.add(resultLabel);
 
-        tableModel = new DefaultTableModel(0, tableHeading.length);
-        tableModel.setColumnIdentifiers(tableHeading);
-        table = new JTable(tableModel);
-
-
-        scrollPanel = new JScrollPane(table);
-        table.setPreferredScrollableViewportSize(new Dimension(500, 400));
-        table.setEnabled(false);
-        panelResult.add(scrollPanel);
 
         radioGroup = new ButtonGroup();
         radioGroup.add(byAddressAndPhoneNumber);
@@ -138,8 +128,6 @@ public class DeleteRecordDialog {
         panelSearch.add(panelInput);
         panelSearch.add(panelButton);
         panelAll.add(panelSearch);
-        panelAll.add(new JSeparator());
-        panelAll.add(panelResult);
         dialog.add(panelAll);
 
         dialog.setVisible(true);

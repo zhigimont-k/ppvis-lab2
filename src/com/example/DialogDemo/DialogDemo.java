@@ -27,7 +27,7 @@ public class DialogDemo {
                 catch (IllegalAccessException e) {}
                 Database model = new Database();
                 Page tableView = new Page();
-                PageController tableController = new PageController(tableView);
+                PageController tableController = new PageController(tableView, model);
                 TableModel tableModel = new TableModel();
                 MainWindow view = new MainWindow(tableView, tableController);
                 MainController mainController = new MainController(model, view, tableView, tableController, tableModel);

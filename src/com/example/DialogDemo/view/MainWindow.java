@@ -34,13 +34,13 @@ public class MainWindow {
     public String title = "PPvIS lab 2";
     public JPanel pagingPanel;
 
-    public JButton btnNextPage;
+    /*public JButton btnNextPage;
     public JButton btnPreviousPage;
     public JButton btnFirstPage;
     public JButton btnLastPage;
     public JLabel numberOfRecordsLabel;
     public JLabel currentPageLabel;
-    public JPanel pagingBtnPanel;
+    public JPanel pagingBtnPanel;*/
 
 
     public MainWindow(Page tableView, PageController tableController){
@@ -106,7 +106,7 @@ public class MainWindow {
         toolBar.add(exitBtn);
         toolBar.addSeparator();
 
-        pagingPanel = new JPanel();
+        /*pagingPanel = new JPanel();
         pagingPanel.setLayout(new BoxLayout(pagingPanel, BoxLayout.Y_AXIS));
         pagingPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         pagingPanel.setAlignmentX(Component.BOTTOM_ALIGNMENT);
@@ -139,7 +139,7 @@ public class MainWindow {
         pagingBtnPanel.add(btnLastPage);
 
         pagingPanel.add(numberOfRecordsLabel);
-        pagingPanel.add(pagingBtnPanel);
+        pagingPanel.add(pagingBtnPanel);*/
 
         newFile = new JMenuItem("New", KeyEvent.VK_N);
         newFile.setAccelerator(
@@ -207,7 +207,7 @@ public class MainWindow {
 
 
 
-        mainFrame.add(pagingPanel);
+        //mainFrame.add(pagingPanel);
 
 
         mainFrame.setVisible(true);

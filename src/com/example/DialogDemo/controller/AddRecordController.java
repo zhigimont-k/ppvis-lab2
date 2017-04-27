@@ -39,7 +39,6 @@ public class AddRecordController {
         @Override
         public void actionPerformed(ActionEvent e) {
             addRecordDialog.dialog.setVisible(false);
-            System.out.println("fuck this shit");
         }
     };
 
@@ -63,7 +62,7 @@ public class AddRecordController {
 
             tableController.viewPage(tableView.currentPage, tableView, model);
 
-            mainWindow.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
+            tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
             mainWindow.mainFrame.validate();
             System.out.println("Added a record.");
             addRecordDialog.dialog.setVisible(false);

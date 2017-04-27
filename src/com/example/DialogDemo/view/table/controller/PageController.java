@@ -7,6 +7,8 @@ import com.example.DialogDemo.view.table.model.TableRecord;
 import com.example.DialogDemo.view.table.view.Page;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Karina on 10.04.2017.
@@ -14,10 +16,19 @@ import javax.swing.*;
 public class PageController {
     JTable table;
     public Boolean tableCreated;
+    public Database model;
+    public Page tableView;
 
-    public PageController(Page tableView){
+    public PageController(Page tableView, Database model){
         tableCreated = false;
+        this.tableView = tableView;
         table = tableView.table;
+        this.model = model;
+
+        tableView.btnNextPage.addActionListener(nextPageActionListener);
+        tableView.btnPreviousPage.addActionListener(previousPageActionListener);
+        tableView.btnFirstPage.addActionListener(firstPageActionListener);
+        tableView.btnLastPage.addActionListener(lastPageActionListener);
     }
 
     public JTable makeEmptyTable(){
@@ -62,7 +73,6 @@ public class PageController {
                 view.table.getModel().setValueAt(record.address.getFlat(), rowIndex, 5);
                 view.table.getModel().setValueAt(record.getMobilePhoneNumber(), rowIndex, 6);
                 view.table.getModel().setValueAt(record.getPhoneNumber(), rowIndex, 7);
-                rowIndex++;
             } else
             {
                 view.table.getModel().setValueAt("", rowIndex, 0);
@@ -73,62 +83,94 @@ public class PageController {
                 view.table.getModel().setValueAt("", rowIndex, 5);
                 view.table.getModel().setValueAt("", rowIndex, 6);
                 view.table.getModel().setValueAt("", rowIndex, 7);
-                rowIndex++;
             }
+            rowIndex++;
         }
 
 
 
 
     }
-    public void nextPage(MainWindow view, Page tableView, Database model){
+    public void nextPage(Page tableView, Database model){
         viewPage(tableView.currentPage+1, tableView, model);
         ++tableView.currentPage;
-        view.btnPreviousPage.setEnabled(true);
-        view.btnFirstPage.setEnabled(true);
+        tableView.btnPreviousPage.setEnabled(true);
+        tableView.btnFirstPage.setEnabled(true);
 
         if (tableView.currentPage == tableView.lastPage){
-            view.btnNextPage.setEnabled(false);
-            view.btnLastPage.setEnabled(false);
+            tableView.btnNextPage.setEnabled(false);
+            tableView.btnLastPage.setEnabled(false);
         }
-        view.currentPageLabel.setText("Page: "+tableView.currentPage);
+        tableView.currentPageLabel.setText("Page: "+tableView.currentPage);
     }
 
-    public void previousPage(MainWindow view, Page tableView, Database model){
+    public void previousPage(Page tableView, Database model){
         viewPage(tableView.currentPage-1, tableView, model);
         --tableView.currentPage;
-        view.btnNextPage.setEnabled(true);
-        view.btnLastPage.setEnabled(true);
+        tableView.btnNextPage.setEnabled(true);
+        tableView.btnLastPage.setEnabled(true);
 
         if (tableView.currentPage == 1){
-            view.btnPreviousPage.setEnabled(false);
-            view.btnFirstPage.setEnabled(false);
+            tableView.btnPreviousPage.setEnabled(false);
+            tableView.btnFirstPage.setEnabled(false);
         }
 
-        view.currentPageLabel.setText("Page: "+tableView.currentPage);
+        tableView.currentPageLabel.setText("Page: "+tableView.currentPage);
     }
 
-    public void firstPage(MainWindow view, Page tableView, Database model){
+    public void firstPage(Page tableView, Database model){
         viewPage(1, tableView, model);
         tableView.currentPage = 1;
-        view.btnNextPage.setEnabled(true);
-        view.btnLastPage.setEnabled(true);
-        view.btnPreviousPage.setEnabled(false);
-        view.btnFirstPage.setEnabled(false);
+        tableView.btnNextPage.setEnabled(true);
+        tableView.btnLastPage.setEnabled(true);
+        tableView.btnPreviousPage.setEnabled(false);
+        tableView.btnFirstPage.setEnabled(false);
 
 
-        view.currentPageLabel.setText("Page: "+tableView.currentPage);
+        tableView.currentPageLabel.setText("Page: "+tableView.currentPage);
     }
 
-    public void lastPage(MainWindow view, Page tableView, Database model){
+    public void lastPage(Page tableView, Database model){
         viewPage(tableView.lastPage, tableView, model);
 
         tableView.currentPage = tableView.lastPage;
-        view.btnNextPage.setEnabled(false);
-        view.btnLastPage.setEnabled(false);
-        view.btnPreviousPage.setEnabled(true);
-        view.btnFirstPage.setEnabled(true);
-        view.currentPageLabel.setText("Page: "+tableView.currentPage);
+        tableView.btnNextPage.setEnabled(false);
+        tableView.btnLastPage.setEnabled(false);
+        tableView.btnPreviousPage.setEnabled(true);
+        tableView.btnFirstPage.setEnabled(true);
+        tableView.currentPageLabel.setText("Page: "+tableView.currentPage);
     }
+
+    public ActionListener nextPageActionListener = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e){
+            nextPage(tableView, model);
+            tableView.pagingPanel.repaint();
+        }
+    };
+
+    public ActionListener previousPageActionListener = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e){
+            previousPage(tableView, model);
+            tableView.pagingPanel.repaint();
+        }
+    };
+
+    public ActionListener firstPageActionListener = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e){
+            firstPage(tableView, model);
+            tableView.pagingPanel.repaint();
+        }
+    };
+
+    public ActionListener lastPageActionListener = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e){
+            lastPage(tableView, model);
+            tableView.pagingPanel.repaint();
+        }
+    };
 
 }
