@@ -113,15 +113,11 @@ public class FileSave {
             student.appendChild(phoneNumber);
         }
 
-        // write the content into xml file
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
 
         StreamResult result = new StreamResult(fileToSave);
-
-        // Output to console for testing
-        // StreamResult result = new StreamResult(System.out);
 
         transformer.transform(source, result);
         mainWindow.mainFrame.setTitle(mainWindow.title + " - \"" + fileToSave.getPath() + "\"");

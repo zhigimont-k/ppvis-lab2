@@ -36,8 +36,6 @@ public class StudentRecord {
         return lastName;
     }
 
-
-
     public String getMobilePhoneNumber(){
         return mobilePhoneNumber;
     }

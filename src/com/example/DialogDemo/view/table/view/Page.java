@@ -14,6 +14,7 @@ public class Page {
     public JScrollPane scrollPanel;
     public int currentPage;
     public int lastPage;
+    public int recordsPerPage;
     public JButton btnNextPage;
     public JButton btnPreviousPage;
     public JButton btnFirstPage;
@@ -23,9 +24,13 @@ public class Page {
     public JPanel pagingBtnPanel;
     public JPanel pagingPanel;
     public DefaultTableModel tableModel;
+    public JLabel recordsPerPageLabel;
+    public JTextField recordsPerPageInput;
+    public JPanel recordsPerPagePanel;
 
     public Page(){
-        tableModel = new DefaultTableModel(10, tableHeading.length);
+        recordsPerPage = 10;
+        tableModel = new DefaultTableModel(recordsPerPage, tableHeading.length);
         tableModel.setColumnIdentifiers(tableHeading);
         table = new JTable(tableModel);
         scrollPanel = new JScrollPane(table);
@@ -38,8 +43,11 @@ public class Page {
         pagingPanel = new JPanel();
         pagingPanel.setLayout(new BoxLayout(pagingPanel, BoxLayout.Y_AXIS));
         pagingPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-        pagingPanel.setAlignmentX(Component.BOTTOM_ALIGNMENT);
-        //pagingPanel.setLocation(0, 200);
+        pagingPanel.setAlignmentX(Component.TOP_ALIGNMENT);
+
+        recordsPerPagePanel = new JPanel();
+        recordsPerPagePanel.setLayout(new BoxLayout(recordsPerPagePanel, BoxLayout.X_AXIS));
+        recordsPerPagePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         pagingBtnPanel = new JPanel();
         pagingBtnPanel.setLayout(new BoxLayout(pagingBtnPanel, BoxLayout.X_AXIS));
@@ -47,7 +55,13 @@ public class Page {
         pagingBtnPanel.setAlignmentX(Component.BOTTOM_ALIGNMENT);
 
         numberOfRecordsLabel = new JLabel("Records in database: ");
-        currentPageLabel = new JLabel("Page: ");
+        currentPageLabel = new JLabel("Page: 1 of "+lastPage);
+        recordsPerPageInput = new JTextField("10");
+        recordsPerPageInput.setPreferredSize(new Dimension(24, 24));
+        recordsPerPageInput.setMaximumSize(new Dimension(24, 24));
+        recordsPerPageLabel = new JLabel(" records per page");
+        recordsPerPagePanel.add(recordsPerPageInput);
+        recordsPerPagePanel.add(recordsPerPageLabel);
 
         btnNextPage = new JButton("Next >");
         btnNextPage.setEnabled(false);
@@ -67,6 +81,7 @@ public class Page {
         pagingBtnPanel.add(btnNextPage);
         pagingBtnPanel.add(btnLastPage);
 
+        pagingPanel.add(recordsPerPagePanel);
         pagingPanel.add(numberOfRecordsLabel);
         pagingPanel.add(pagingBtnPanel);
     }

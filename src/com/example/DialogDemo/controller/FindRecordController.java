@@ -1,11 +1,9 @@
 package com.example.DialogDemo.controller;
 
 import com.example.DialogDemo.model.Database;
-import com.example.DialogDemo.model.StudentRecord;
 import com.example.DialogDemo.view.FindRecordDialog;
 import com.example.DialogDemo.view.MainWindow;
 import com.example.DialogDemo.view.table.controller.PageController;
-import com.example.DialogDemo.view.table.model.TableModel;
 import com.example.DialogDemo.view.table.view.Page;
 
 import javax.swing.*;
@@ -101,11 +99,7 @@ public class FindRecordController {
     ActionListener findRecordActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            /*for(int index = findRecordDialog.tableView.tableModel.getRowCount() - 1; index >= 0; index-- )
-            {
-                findRecordDialog.tableView.tableModel.removeRow(index);
-            }*/
-            for (int rowIndex = 0; rowIndex < 10; rowIndex++){
+            for (int rowIndex = 0; rowIndex < tableView.recordsPerPage; rowIndex++){
                 for (int columnIndex = 0; columnIndex < 8; columnIndex++){
                     tableView.table.getModel().setValueAt("", rowIndex, columnIndex);
                 }
@@ -115,7 +109,8 @@ public class FindRecordController {
             }
             foundRecordsNumber = 0;
             if (findRecordDialog.byLastNameAndPhoneNumber.isSelected()){
-                if (findRecordDialog.lastNameField.getText().equals("") && findRecordDialog.phoneNumberField.getText().equals("")){
+                if (findRecordDialog.lastNameField.getText().equals("") &&
+                        findRecordDialog.phoneNumberField.getText().equals("")){
                     JOptionPane.showMessageDialog(new JFrame(), "Please fill in fields.");
                     return;
                 }
@@ -124,24 +119,30 @@ public class FindRecordController {
                             (model.recordList.get(recordIndex).getLastName()) ||
                             findRecordDialog.phoneNumberField.getText().equals
                                     (model.recordList.get(recordIndex).getPhoneNumber())){
-                            searchModel.addRecordToDatabase(model.recordList.get(recordIndex), searchModel.recordList);
+                            searchModel.addRecordToDatabase(model.recordList.get(recordIndex),
+                                    searchModel.recordList);
                                 foundRecordsNumber++;
                     }
                 }
             }
 
             if (findRecordDialog.byLastNameAndNumber.isSelected()){
-                if (findRecordDialog.lastNameField.getText().equals("") && findRecordDialog.phoneNumberField.getText().equals("")){
+                if (findRecordDialog.lastNameField.getText().equals("") &&
+                        findRecordDialog.phoneNumberField.getText().equals("")){
                     JOptionPane.showMessageDialog(new JFrame(), "Please fill in fields.");
                     return;
                 }
                 for (int recordIndex = 0; recordIndex < model.recordList.size(); recordIndex++){
-                    if (findRecordDialog.lastNameField.getText().equals(model.recordList.get(recordIndex).getLastName()) ||
+                    if (findRecordDialog.lastNameField.getText().equals
+                            (model.recordList.get(recordIndex).getLastName()) ||
                             (!findRecordDialog.phoneNumberField.getText().equals("") &&
-                                    (model.recordList.get(recordIndex).getPhoneNumber().contains(findRecordDialog.phoneNumberField.getText()) ||
-                                            model.recordList.get(recordIndex).getMobilePhoneNumber().contains(findRecordDialog.phoneNumberField.getText())))){
+                                    (model.recordList.get(recordIndex).getPhoneNumber().contains
+                                            (findRecordDialog.phoneNumberField.getText()) ||
+                                            model.recordList.get(recordIndex).getMobilePhoneNumber().contains
+                                                    (findRecordDialog.phoneNumberField.getText())))){
 
-                        searchModel.addRecordToDatabase(model.recordList.get(recordIndex), searchModel.recordList);
+                        searchModel.addRecordToDatabase(model.recordList.get(recordIndex),
+                                searchModel.recordList);
                         foundRecordsNumber++;
                     }
                 }
@@ -157,14 +158,19 @@ public class FindRecordController {
                     return;
                 }
                 for (int recordIndex = 0; recordIndex < model.recordList.size(); recordIndex++){
-                    if (findRecordDialog.cityField.getText().equals(model.recordList.get(recordIndex).address.getCity()) ||
-                            findRecordDialog.streetField.getText().equals(model.recordList.get(recordIndex).address.getStreet()) ||
-                            findRecordDialog.houseField.getText().equals(model.recordList.get(recordIndex).address.getHouse()+"") ||
-                            findRecordDialog.flatField.getText().equals(model.recordList.get(recordIndex).address.getFlat()+"") ||
+                    if (findRecordDialog.cityField.getText().equals
+                            (model.recordList.get(recordIndex).address.getCity()) ||
+                            findRecordDialog.streetField.getText().equals
+                                    (model.recordList.get(recordIndex).address.getStreet()) ||
+                            findRecordDialog.houseField.getText().equals
+                                    (model.recordList.get(recordIndex).address.getHouse()+"") ||
+                            findRecordDialog.flatField.getText().equals
+                                    (model.recordList.get(recordIndex).address.getFlat()+"") ||
                             findRecordDialog.phoneNumberField.getText().equals
                                     (model.recordList.get(recordIndex).getPhoneNumber())){
 
-                        searchModel.addRecordToDatabase(model.recordList.get(recordIndex), searchModel.recordList);
+                        searchModel.addRecordToDatabase(model.recordList.get(recordIndex),
+                                searchModel.recordList);
                         foundRecordsNumber++;
                     }
                 }
@@ -176,10 +182,9 @@ public class FindRecordController {
                 return;
             }
 
-            tableController.viewPage(tableView.currentPage, tableView, searchModel);
-            //tableController.firstPage(tableView, searchModel);
-            tableView.currentPageLabel.setText("Page: " + tableView.currentPage);
+            tableController.firstPage(tableView, searchModel);
             tableView.numberOfRecordsLabel.setText("Records in database: " + searchModel.recordList.size());
+            tableView.currentPageLabel.setText("Page: "+tableView.currentPage+" of "+tableView.lastPage);
             tableView.pagingPanel.repaint();
             tableView.pagingPanel.validate();
         }

@@ -39,7 +39,6 @@ public class AddRecordDialog {
         dialog.add(scrollPanel);
         dialog.add(btnAdd);
         dialog.add(btnCancel);
-        //dialog.add(panelAll);
 
         dialog.setVisible(true);
     }

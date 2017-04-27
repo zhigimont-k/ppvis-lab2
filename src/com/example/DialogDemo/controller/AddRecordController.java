@@ -4,7 +4,6 @@ import com.example.DialogDemo.model.Database;
 import com.example.DialogDemo.view.AddRecordDialog;
 import com.example.DialogDemo.view.MainWindow;
 import com.example.DialogDemo.view.table.controller.PageController;
-import com.example.DialogDemo.view.table.model.TableModel;
 import com.example.DialogDemo.view.table.view.Page;
 import com.example.DialogDemo.model.StudentRecord;
 
@@ -19,16 +18,14 @@ public class AddRecordController {
     MainWindow mainWindow;
     AddRecordDialog addRecordDialog;
     Page tableView;
-    TableModel tableModel;
     PageController tableController;
 
     AddRecordController(MainWindow mainWindow, Database model, AddRecordDialog addRecordDialog,
-                        Page tableView, TableModel tableModel, PageController tableController){
+                        Page tableView, PageController tableController){
         this.mainWindow = mainWindow;
         this.model = model;
         this.addRecordDialog = addRecordDialog;
         this.tableView = tableView;
-        this.tableModel = tableModel;
         this.tableController = tableController;
 
         addRecordDialog.btnAdd.addActionListener(addRecordActionListener);
@@ -58,11 +55,10 @@ public class AddRecordController {
                     mobilePhoneNumber, phoneNumber);
 
             model.addRecordToDatabase(addedRecord, model.recordList);
-            //tableController.addRecordToTable(addedRecord, tableModel, tableView);
-
-            tableController.viewPage(tableView.currentPage, tableView, model);
+            tableController.firstPage(tableView, model);
 
             tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
+            tableView.currentPageLabel.setText("Page: "+tableView.currentPage+" of "+tableView.lastPage);
             mainWindow.mainFrame.validate();
             System.out.println("Added a record.");
             addRecordDialog.dialog.setVisible(false);

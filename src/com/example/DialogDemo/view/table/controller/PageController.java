@@ -2,8 +2,6 @@ package com.example.DialogDemo.view.table.controller;
 
 import com.example.DialogDemo.model.Database;
 import com.example.DialogDemo.model.StudentRecord;
-import com.example.DialogDemo.view.MainWindow;
-import com.example.DialogDemo.view.table.model.TableRecord;
 import com.example.DialogDemo.view.table.view.Page;
 
 import javax.swing.*;
@@ -14,7 +12,6 @@ import java.awt.event.ActionListener;
  * Created by Karina on 10.04.2017.
  */
 public class PageController {
-    //JTable table;
     public Boolean tableCreated;
     public Database model;
     public Page tableView;
@@ -22,48 +19,25 @@ public class PageController {
     public PageController(Page tableView, Database model){
         tableCreated = false;
         this.tableView = tableView;
-        //table = tableView.table;
         this.model = model;
 
         tableView.btnNextPage.addActionListener(nextPageActionListener);
         tableView.btnPreviousPage.addActionListener(previousPageActionListener);
         tableView.btnFirstPage.addActionListener(firstPageActionListener);
         tableView.btnLastPage.addActionListener(lastPageActionListener);
-    }
-
-    public JTable makeEmptyTable(){
-        for (int rowIndex = 0; rowIndex < 10; rowIndex++){
-            for (int columnIndex = 0; columnIndex < 8; columnIndex++){
-                tableView.table.getModel().setValueAt("", rowIndex, columnIndex);
-            }
-        }
-        tableCreated = true;
-        return tableView.table;
-    }
-
-    public void removeRecordFromTable(){
-
-    }
-
-    public TableRecord recordToTableRecord(StudentRecord studentRecord){
-        return new TableRecord(studentRecord.getFirstName(), studentRecord.getLastName(),
-                studentRecord.address.getCity(), studentRecord.address.getStreet(),
-                Integer.toString(studentRecord.address.getHouse()), Integer.toString(studentRecord.address.getFlat()),
-                studentRecord.getMobilePhoneNumber(), studentRecord.getPhoneNumber());
+        tableView.recordsPerPageInput.addActionListener(setNumberOfRecordsOnPage);
     }
 
     public void viewPage(int page, Page view, Database model){
-        //JTable tablePage = new JTable();
         int rowIndex = 0;
-        //int rowIndex = Database.recordList.size() - 1;
 
-        if (model.recordList.size() % 10 == 0 && model.recordList.size() != 0){
-            view.lastPage = model.recordList.size() / 10;
+        if (model.recordList.size() % tableView.recordsPerPage == 0 && model.recordList.size() != 0){
+            view.lastPage = model.recordList.size() / tableView.recordsPerPage;
         } else {
-            view.lastPage = model.recordList.size() / 10 + 1;
+            view.lastPage = model.recordList.size() / tableView.recordsPerPage + 1;
         }
 
-        if (model.recordList.size() > 10) {
+        if (model.recordList.size() > tableView.recordsPerPage) {
             view.btnNextPage.setEnabled(true);
             view.btnLastPage.setEnabled(true);
         } else {
@@ -73,7 +47,8 @@ public class PageController {
             view.btnLastPage.setEnabled(false);
         }
 
-        for (int recordIndex = (page-1)*10; recordIndex < page*10; recordIndex++){
+        for (int recordIndex = (page-1)*tableView.recordsPerPage; recordIndex < page*tableView.recordsPerPage;
+             recordIndex++){
             if (recordIndex < model.recordList.size()){
                 StudentRecord record = model.recordList.get(recordIndex);
                 view.table.getModel().setValueAt(record.getFirstName(), rowIndex, 0);
@@ -98,9 +73,6 @@ public class PageController {
             rowIndex++;
         }
 
-
-
-
     }
     public void nextPage(Page tableView, Database model){
         viewPage(tableView.currentPage+1, tableView, model);
@@ -112,7 +84,7 @@ public class PageController {
             tableView.btnNextPage.setEnabled(false);
             tableView.btnLastPage.setEnabled(false);
         }
-        tableView.currentPageLabel.setText("Page: "+tableView.currentPage);
+        tableView.currentPageLabel.setText("Page: "+tableView.currentPage+" of "+tableView.lastPage);
     }
 
     public void previousPage(Page tableView, Database model){
@@ -126,19 +98,20 @@ public class PageController {
             tableView.btnFirstPage.setEnabled(false);
         }
 
-        tableView.currentPageLabel.setText("Page: "+tableView.currentPage);
+        tableView.currentPageLabel.setText("Page: "+tableView.currentPage+" of "+tableView.lastPage);
     }
 
     public void firstPage(Page tableView, Database model){
         viewPage(1, tableView, model);
         tableView.currentPage = 1;
-        tableView.btnNextPage.setEnabled(true);
-        tableView.btnLastPage.setEnabled(true);
+        if (tableView.lastPage > 1){
+            tableView.btnNextPage.setEnabled(true);
+            tableView.btnLastPage.setEnabled(true);
+        }
         tableView.btnPreviousPage.setEnabled(false);
         tableView.btnFirstPage.setEnabled(false);
 
-
-        tableView.currentPageLabel.setText("Page: "+tableView.currentPage);
+        tableView.currentPageLabel.setText("Page: "+tableView.currentPage+" of "+tableView.lastPage);
     }
 
     public void lastPage(Page tableView, Database model){
@@ -149,7 +122,7 @@ public class PageController {
         tableView.btnLastPage.setEnabled(false);
         tableView.btnPreviousPage.setEnabled(true);
         tableView.btnFirstPage.setEnabled(true);
-        tableView.currentPageLabel.setText("Page: "+tableView.currentPage);
+        tableView.currentPageLabel.setText("Page: "+tableView.currentPage+" of "+tableView.lastPage);
     }
 
     public ActionListener nextPageActionListener = new ActionListener(){
@@ -180,6 +153,27 @@ public class PageController {
         @Override
         public void actionPerformed(ActionEvent e){
             lastPage(tableView, model);
+            tableView.pagingPanel.repaint();
+        }
+    };
+
+    public ActionListener setNumberOfRecordsOnPage = new ActionListener(){
+        @Override
+        public void actionPerformed(ActionEvent e){
+            for (int rowIndex = 0; rowIndex < tableView.recordsPerPage; rowIndex++){
+                for (int columnIndex = 0; columnIndex < 8; columnIndex++){
+                    tableView.table.getModel().setValueAt("", rowIndex, columnIndex);
+                }
+            }
+            tableView.recordsPerPage = Integer.parseInt(tableView.recordsPerPageInput.getText());
+            if (tableView.recordsPerPage <= 0){
+                JOptionPane.showMessageDialog(new JFrame(), "Please input number more than 0.");
+                tableView.recordsPerPage = 10;
+                tableView.recordsPerPageInput.setText(tableView.recordsPerPage+"");
+                return;
+            }
+            tableView.tableModel.setRowCount(tableView.recordsPerPage);
+            firstPage(tableView, model);
             tableView.pagingPanel.repaint();
         }
     };

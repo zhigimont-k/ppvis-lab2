@@ -8,7 +8,6 @@ import com.example.DialogDemo.model.Database;
 import com.example.DialogDemo.view.DeleteRecordDialog;
 import com.example.DialogDemo.view.MainWindow;
 import com.example.DialogDemo.view.table.controller.PageController;
-import com.example.DialogDemo.view.table.model.TableModel;
 import com.example.DialogDemo.view.table.view.Page;
 
 import javax.swing.*;
@@ -21,16 +20,14 @@ public class DeleteRecordController extends FindRecordController{
     MainWindow mainWindow;
     DeleteRecordDialog deleteRecordDialog;
     Page tableView;
-    TableModel tableModel;
     PageController tableController;
 
     public DeleteRecordController(MainWindow mainWindow, Database model, DeleteRecordDialog deleteRecordDialog,
-                                  Page tableView, TableModel tableModel, PageController tableController){
+                                  Page tableView, PageController tableController){
         this.mainWindow = mainWindow;
         this.model = model;
         this.deleteRecordDialog = deleteRecordDialog;
         this.tableView = tableView;
-        this.tableModel = tableModel;
         this.tableController = tableController;
 
         deleteRecordDialog.byAddressAndPhoneNumber.addActionListener(byAddressAndPhoneNumberActionListener);
@@ -117,15 +114,19 @@ public class DeleteRecordController extends FindRecordController{
             }
 
             if (deleteRecordDialog.byLastNameAndNumber.isSelected()){
-                if (deleteRecordDialog.lastNameField.getText().equals("") && deleteRecordDialog.phoneNumberField.getText().equals("")){
+                if (deleteRecordDialog.lastNameField.getText().equals("") &&
+                        deleteRecordDialog.phoneNumberField.getText().equals("")){
                     JOptionPane.showMessageDialog(new JFrame(), "Please fill in fields.");
                     return;
                 }
                 for (int recordIndex = 0; recordIndex < model.recordList.size(); recordIndex++){
-                    if (deleteRecordDialog.lastNameField.getText().equals(model.recordList.get(recordIndex).getLastName()) ||
+                    if (deleteRecordDialog.lastNameField.getText().equals
+                            (model.recordList.get(recordIndex).getLastName()) ||
                             (!deleteRecordDialog.phoneNumberField.getText().equals("") &&
-                                    (model.recordList.get(recordIndex).getPhoneNumber().contains(deleteRecordDialog.phoneNumberField.getText()) ||
-                            model.recordList.get(recordIndex).getMobilePhoneNumber().contains(deleteRecordDialog.phoneNumberField.getText())))){
+                                    (model.recordList.get(recordIndex).getPhoneNumber().contains
+                                            (deleteRecordDialog.phoneNumberField.getText()) ||
+                            model.recordList.get(recordIndex).getMobilePhoneNumber().contains
+                                    (deleteRecordDialog.phoneNumberField.getText())))){
 
                         model.recordList.remove(recordIndex);
                         recordIndex--;
@@ -141,14 +142,19 @@ public class DeleteRecordController extends FindRecordController{
                         deleteRecordDialog.houseField.getText().equals("") &&
                         deleteRecordDialog.flatField.getText().equals("") &&
                         deleteRecordDialog.phoneNumberField.getText().equals("")){
-                    JOptionPane.showMessageDialog(new JFrame(), "Please fill in all necessary fields.");
+                    JOptionPane.showMessageDialog(new JFrame(),
+                            "Please fill in all necessary fields.");
                     return;
                 }
                 for (int recordIndex = 0; recordIndex < model.recordList.size(); recordIndex++){
-                    if (deleteRecordDialog.cityField.getText().equals(model.recordList.get(recordIndex).address.getCity()) ||
-                            deleteRecordDialog.streetField.getText().equals(model.recordList.get(recordIndex).address.getStreet()) ||
-                            deleteRecordDialog.houseField.getText().equals(model.recordList.get(recordIndex).address.getHouse()+"") ||
-                            deleteRecordDialog.flatField.getText().equals(model.recordList.get(recordIndex).address.getFlat()+"") ||
+                    if (deleteRecordDialog.cityField.getText().equals
+                            (model.recordList.get(recordIndex).address.getCity()) ||
+                            deleteRecordDialog.streetField.getText().equals
+                                    (model.recordList.get(recordIndex).address.getStreet()) ||
+                            deleteRecordDialog.houseField.getText().equals
+                                    (model.recordList.get(recordIndex).address.getHouse()+"") ||
+                            deleteRecordDialog.flatField.getText().equals
+                                    (model.recordList.get(recordIndex).address.getFlat()+"") ||
                             deleteRecordDialog.phoneNumberField.getText().equals
                                     (model.recordList.get(recordIndex).getPhoneNumber())){
                         model.recordList.remove(recordIndex);
@@ -170,10 +176,13 @@ public class DeleteRecordController extends FindRecordController{
                 tableView.btnPreviousPage.setEnabled(false);
                 tableView.btnFirstPage.setEnabled(false);
             }
-            tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
+            tableView.numberOfRecordsLabel.setText
+                    ("Records in database: "+model.recordList.size());
             tableView.pagingPanel.repaint();
             mainWindow.mainFrame.validate();
-            JOptionPane.showMessageDialog(new JFrame(), "Deleted records from database: "+foundRecordsNumber);
+            JOptionPane.showMessageDialog(new JFrame(),
+                    "Deleted records from database: "+foundRecordsNumber);
+            deleteRecordDialog.dialog.setVisible(false);
         }
     };
 

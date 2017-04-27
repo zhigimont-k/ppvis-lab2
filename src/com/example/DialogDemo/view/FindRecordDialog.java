@@ -38,9 +38,6 @@ public class FindRecordDialog {
     public JLabel phoneNumberLabel;
     public JLabel resultLabel;
     public JPanel panelResult;
-    public JScrollPane scrollPanel;
-    String[] tableHeading = {"First name",
-            "Last name", "City", "Street", "House", "Flat", "Mobile phone number", "Phone number"};
 
 
     public FindRecordDialog(MainWindow mainWindow){

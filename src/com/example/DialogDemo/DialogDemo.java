@@ -4,7 +4,6 @@ import com.example.DialogDemo.controller.MainController;
 import com.example.DialogDemo.model.Database;
 import com.example.DialogDemo.view.MainWindow;
 import com.example.DialogDemo.view.table.controller.PageController;
-import com.example.DialogDemo.view.table.model.TableModel;
 import com.example.DialogDemo.view.table.view.Page;
 
 import javax.swing.*;
@@ -28,9 +27,8 @@ public class DialogDemo {
                 Database model = new Database();
                 Page tableView = new Page();
                 PageController tableController = new PageController(tableView, model);
-                TableModel tableModel = new TableModel();
                 MainWindow view = new MainWindow(tableView, tableController);
-                MainController mainController = new MainController(model, view, tableView, tableController, tableModel);
+                MainController mainController = new MainController(model, view, tableView, tableController);
 
             }
         });

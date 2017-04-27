@@ -12,14 +12,8 @@ import java.awt.*;
 public class DeleteRecordDialog {
 
     public JDialog dialog;
-    //public JTable table;
-    public DefaultTableModel tableModel;
-    String[] tableHeading = {"First name",
-            "Last name", "City", "Street", "House", "Flat", "Mobile phone number", "Phone number"};
     public JButton btnFind;
     public JButton btnCancel;
-
-    //public Page tableView;
     public ButtonGroup radioGroup;
     public JRadioButton byLastNameAndPhoneNumber;
     public JRadioButton byAddressAndPhoneNumber;
@@ -41,9 +35,6 @@ public class DeleteRecordDialog {
     public JLabel houseLabel;
     public JLabel flatLabel;
     public JLabel phoneNumberLabel;
-    //public JLabel resultLabel;
-    //public JPanel panelResult;
-    public JScrollPane scrollPanel;
 
     public DeleteRecordDialog(MainWindow mainWindow){
         dialog = new JDialog(mainWindow.mainFrame, "Find and delete records", false);

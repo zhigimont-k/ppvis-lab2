@@ -70,59 +70,42 @@ public class FileOpen {
                     if (qName.equalsIgnoreCase("LastName")) {
                         lastNameBoolean = true;
                     }
-
                     if (qName.equalsIgnoreCase("Address")) {
                         addressBoolean = true;
                     }
-
                     if (qName.equalsIgnoreCase("City")) {
                         cityBoolean = true;
                     }
-
                     if (qName.equalsIgnoreCase("Street")) {
                         streetBoolean = true;
                     }
-
                     if (qName.equalsIgnoreCase("House")) {
                         houseBoolean = true;
                     }
-
                     if (qName.equalsIgnoreCase("Flat")) {
                         flatBoolean = true;
                     }
-
                     if (qName.equalsIgnoreCase("MobilePhone")) {
                         mobilePhoneNumberBoolean = true;
                     }
-
                     if (qName.equalsIgnoreCase("Phone")) {
                         phoneNumberBoolean = true;
                     }
-
-
                 }
 
                 public void endElement(String uri, String localName,
                                        String qName) throws SAXException {
-
                     System.out.println("End Element :" + qName);
-
                 }
 
-                //
-
                 public void characters(char ch[], int start, int length) throws SAXException {
-
-
                     String firstName;
                     String lastName;
                     Address address = new Address();
                     String mobilePhoneNumber;
                     String phoneNumber;
 
-
                     if (firstNameBoolean) {
-
                         addedRecord = new StudentRecord();
                         firstName = new String(ch, start, length);
                         addedRecord.setFirstName(firstName);
@@ -136,7 +119,6 @@ public class FileOpen {
                         System.out.println("Last Name : " + lastName);
                         lastNameBoolean = false;
                     }
-
 
                     if (addressBoolean) {
                         if (cityBoolean) {
@@ -184,33 +166,16 @@ public class FileOpen {
                         phoneNumberBoolean = false;
 
                         model.addRecordToDatabase(addedRecord, model.recordList);
-
-
-                        //int rowIndex = Database.recordList.size() - 1;
-
-                        /*tableView.table.getModel().setValueAt(addedRecord.getFirstName(), rowIndex, 0);
-                        tableView.table.getModel().setValueAt(addedRecord.getLastName(), rowIndex, 1);
-                        tableView.table.getModel().setValueAt(addedRecord.address.getCity(), rowIndex, 2);
-                        tableView.table.getModel().setValueAt(addedRecord.address.getStreet(), rowIndex, 3);
-                        tableView.table.getModel().setValueAt(addedRecord.address.getHouse(), rowIndex, 4);
-                        tableView.table.getModel().setValueAt(addedRecord.address.getFlat(), rowIndex, 5);
-                        tableView.table.getModel().setValueAt(addedRecord.getMobilePhoneNumber(), rowIndex, 6);
-                        tableView.table.getModel().setValueAt(addedRecord.getPhoneNumber(), rowIndex, 7);*/
                     }
-
-
                 }
-
             };
 
             saxParser.parse(fileToOpen, handler);
             mainWindow.mainFrame.setTitle(mainWindow.title + " - \"" + fileToOpen.getPath() + "\"");
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //mainWindow.setTitle(fileToOpen);
     }
 
 }
