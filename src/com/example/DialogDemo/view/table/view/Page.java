@@ -14,8 +14,6 @@ public class Page {
     public JScrollPane scrollPanel;
     public int currentPage;
     public int lastPage;
-    public JPanel panel;
-
     public JButton btnNextPage;
     public JButton btnPreviousPage;
     public JButton btnFirstPage;

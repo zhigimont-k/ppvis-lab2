@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
  * Created by Karina on 10.04.2017.
  */
 public class PageController {
-    JTable table;
+    //JTable table;
     public Boolean tableCreated;
     public Database model;
     public Page tableView;
@@ -22,7 +22,7 @@ public class PageController {
     public PageController(Page tableView, Database model){
         tableCreated = false;
         this.tableView = tableView;
-        table = tableView.table;
+        //table = tableView.table;
         this.model = model;
 
         tableView.btnNextPage.addActionListener(nextPageActionListener);
@@ -34,11 +34,11 @@ public class PageController {
     public JTable makeEmptyTable(){
         for (int rowIndex = 0; rowIndex < 10; rowIndex++){
             for (int columnIndex = 0; columnIndex < 8; columnIndex++){
-                table.getModel().setValueAt("", rowIndex, columnIndex);
+                tableView.table.getModel().setValueAt("", rowIndex, columnIndex);
             }
         }
         tableCreated = true;
-        return table;
+        return tableView.table;
     }
 
     public void removeRecordFromTable(){
@@ -62,6 +62,17 @@ public class PageController {
         } else {
             view.lastPage = model.recordList.size() / 10 + 1;
         }
+
+        if (model.recordList.size() > 10) {
+            view.btnNextPage.setEnabled(true);
+            view.btnLastPage.setEnabled(true);
+        } else {
+            view.btnFirstPage.setEnabled(false);
+            view.btnPreviousPage.setEnabled(false);
+            view.btnNextPage.setEnabled(false);
+            view.btnLastPage.setEnabled(false);
+        }
+
         for (int recordIndex = (page-1)*10; recordIndex < page*10; recordIndex++){
             if (recordIndex < model.recordList.size()){
                 StudentRecord record = model.recordList.get(recordIndex);

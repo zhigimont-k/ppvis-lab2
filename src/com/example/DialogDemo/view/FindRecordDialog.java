@@ -12,9 +12,7 @@ import java.awt.*;
 public class FindRecordDialog {
 
     public JDialog dialog;
-    public JTable table;
     public Page tableView;
-    public DefaultTableModel tableModel;
     public JButton btnFind;
     public JButton btnCancel;
     public ButtonGroup radioGroup;
@@ -101,17 +99,7 @@ public class FindRecordDialog {
         resultLabel = new JLabel("Search result:\n");
         panelResult.add(resultLabel);
 
-        //tableModel = new DefaultTableModel(0, tableHeading.length);
-        //tableModel.setColumnIdentifiers(tableHeading);
-        //table = new JTable(tableModel);
-
-
-        //scrollPanel = new JScrollPane(table);
-        //table.setPreferredScrollableViewportSize(new Dimension(500, 400));
-        //table.setEnabled(false);
-
         panelResult.add(tableView.pagingPanel);
-        //panelResult.add(scrollPanel);
 
         radioGroup = new ButtonGroup();
         radioGroup.add(byAddressAndPhoneNumber);

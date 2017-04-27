@@ -27,15 +27,14 @@ public class FindRecordController {
 
     FindRecordController(){}
 
-    FindRecordController(MainWindow mainWindow, Database model, FindRecordDialog findRecordDialog,
-                         Page tableView, PageController tableController){
+    FindRecordController(MainWindow mainWindow, Database model, FindRecordDialog findRecordDialog){
         this.mainWindow = mainWindow;
         this.model = model;
         this.findRecordDialog = findRecordDialog;
-        this.tableView = tableView;
-        this.tableController = tableController;
-        foundRecordsNumber = 0;
+        this.tableView = findRecordDialog.tableView;
         searchModel = new Database();
+        this.tableController = new PageController(tableView, searchModel);
+        foundRecordsNumber = 0;
 
         findRecordDialog.byAddressAndPhoneNumber.addActionListener(byAddressAndPhoneNumberActionListener);
         findRecordDialog.btnCancel.addActionListener(cancelDialogActionListener);
@@ -102,9 +101,17 @@ public class FindRecordController {
     ActionListener findRecordActionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            for(int index = findRecordDialog.tableView.tableModel.getRowCount() - 1; index >= 0; index-- )
+            /*for(int index = findRecordDialog.tableView.tableModel.getRowCount() - 1; index >= 0; index-- )
             {
                 findRecordDialog.tableView.tableModel.removeRow(index);
+            }*/
+            for (int rowIndex = 0; rowIndex < 10; rowIndex++){
+                for (int columnIndex = 0; columnIndex < 8; columnIndex++){
+                    tableView.table.getModel().setValueAt("", rowIndex, columnIndex);
+                }
+            }
+            for (int index = searchModel.recordList.size() - 1; index >=0; index--){
+                searchModel.recordList.remove(index);
             }
             foundRecordsNumber = 0;
             if (findRecordDialog.byLastNameAndPhoneNumber.isSelected()){
@@ -117,7 +124,7 @@ public class FindRecordController {
                             (model.recordList.get(recordIndex).getLastName()) ||
                             findRecordDialog.phoneNumberField.getText().equals
                                     (model.recordList.get(recordIndex).getPhoneNumber())){
-                            Database.addRecordToDatabase(model.recordList.get(recordIndex), searchModel.recordList);
+                            searchModel.addRecordToDatabase(model.recordList.get(recordIndex), searchModel.recordList);
                                 foundRecordsNumber++;
                     }
                 }
@@ -134,7 +141,7 @@ public class FindRecordController {
                                     (model.recordList.get(recordIndex).getPhoneNumber().contains(findRecordDialog.phoneNumberField.getText()) ||
                                             model.recordList.get(recordIndex).getMobilePhoneNumber().contains(findRecordDialog.phoneNumberField.getText())))){
 
-                        Database.addRecordToDatabase(model.recordList.get(recordIndex), searchModel.recordList);
+                        searchModel.addRecordToDatabase(model.recordList.get(recordIndex), searchModel.recordList);
                         foundRecordsNumber++;
                     }
                 }
@@ -157,9 +164,7 @@ public class FindRecordController {
                             findRecordDialog.phoneNumberField.getText().equals
                                     (model.recordList.get(recordIndex).getPhoneNumber())){
 
-                        Database.addRecordToDatabase(model.recordList.get(recordIndex), searchModel.recordList);
-
-                        //addRecordToTable(model.recordList.get(recordIndex), tableView, foundRecordsNumber);
+                        searchModel.addRecordToDatabase(model.recordList.get(recordIndex), searchModel.recordList);
                         foundRecordsNumber++;
                     }
                 }
@@ -171,33 +176,13 @@ public class FindRecordController {
                 return;
             }
 
-            tableController.firstPage(findRecordDialog.tableView, searchModel);
-            if (tableView.lastPage == 1){
-                findRecordDialog.tableView.btnNextPage.setEnabled(false);
-                findRecordDialog.tableView.btnLastPage.setEnabled(false);
-                findRecordDialog.tableView.btnPreviousPage.setEnabled(false);
-                findRecordDialog.tableView.btnFirstPage.setEnabled(false);
-            }
-            findRecordDialog.tableView.numberOfRecordsLabel.setText("Records in database: " + searchModel.recordList.size());
-            findRecordDialog.tableView.pagingPanel.repaint();
-            findRecordDialog.tableView.pagingPanel.validate();
-            findRecordDialog.panelSearch.validate();
+            tableController.viewPage(tableView.currentPage, tableView, searchModel);
+            //tableController.firstPage(tableView, searchModel);
+            tableView.currentPageLabel.setText("Page: " + tableView.currentPage);
+            tableView.numberOfRecordsLabel.setText("Records in database: " + searchModel.recordList.size());
+            tableView.pagingPanel.repaint();
+            tableView.pagingPanel.validate();
         }
     };
 
-    public void addRecordToTable(StudentRecord record, Page page, int rowIndex){
-        //model.addTableRecord(recordToTableRecord(record));
-        //int rowIndex = (Database.recordList.size() - 1)/10 + (Database.recordList.size() - 1)%10;
-        page.tableModel.addRow(new Object[]
-                {"","","","","","","",""});
-        page.table.getModel().setValueAt(record.getFirstName(), rowIndex, 0);
-        page.table.getModel().setValueAt(record.getLastName(), rowIndex, 1);
-        page.table.getModel().setValueAt(record.address.getCity(), rowIndex, 2);
-        page.table.getModel().setValueAt(record.address.getStreet(), rowIndex, 3);
-        page.table.getModel().setValueAt(record.address.getHouse(), rowIndex, 4);
-        page.table.getModel().setValueAt(record.address.getFlat(), rowIndex, 5);
-        page.table.getModel().setValueAt(record.getMobilePhoneNumber(), rowIndex, 6);
-        page.table.getModel().setValueAt(record.getPhoneNumber(), rowIndex, 7);
-
-    }
 }

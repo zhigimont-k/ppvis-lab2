@@ -15,11 +15,7 @@ public class Database{
         recordList = new ArrayList<>();
     }
 
-    public static void addRecordToDatabase(StudentRecord record, List<StudentRecord> recordList){
+    public void addRecordToDatabase(StudentRecord record, List<StudentRecord> recordList){
         recordList.add(record);
-    }
-    public static void deleteRecordFromDatabase(int index, List<StudentRecord> recordList){
-
-        recordList.remove(index);
     }
 }

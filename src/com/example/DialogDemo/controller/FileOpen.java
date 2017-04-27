@@ -183,7 +183,7 @@ public class FileOpen {
                         System.out.println("Phone : " + phoneNumber);
                         phoneNumberBoolean = false;
 
-                        Database.addRecordToDatabase(addedRecord, model.recordList);
+                        model.addRecordToDatabase(addedRecord, model.recordList);
 
 
                         //int rowIndex = Database.recordList.size() - 1;

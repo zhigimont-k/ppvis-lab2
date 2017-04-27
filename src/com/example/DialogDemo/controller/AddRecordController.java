@@ -57,7 +57,7 @@ public class AddRecordController {
             StudentRecord addedRecord = new StudentRecord(firstName, lastName, city, street, house, flat,
                     mobilePhoneNumber, phoneNumber);
 
-            Database.addRecordToDatabase(addedRecord, model.recordList);
+            model.addRecordToDatabase(addedRecord, model.recordList);
             //tableController.addRecordToTable(addedRecord, tableModel, tableView);
 
             tableController.viewPage(tableView.currentPage, tableView, model);

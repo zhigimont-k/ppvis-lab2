@@ -58,9 +58,10 @@ public class MainController {
 
     ActionListener newFileActionListener = new ActionListener(){
         @Override
-        public void actionPerformed(ActionEvent e){for (int rowIndex = 0; rowIndex < 10; rowIndex++){
-            for (int columnIndex = 0; columnIndex < 8; columnIndex++){
-                tableView.table.getModel().setValueAt("", rowIndex, columnIndex);
+        public void actionPerformed(ActionEvent e){
+            for (int rowIndex = 0; rowIndex < 10; rowIndex++){
+                for (int columnIndex = 0; columnIndex < 8; columnIndex++){
+                    tableView.table.getModel().setValueAt("", rowIndex, columnIndex);
             }
         }
             for (int index = model.recordList.size() - 1; index >=0; index--){
@@ -72,14 +73,10 @@ public class MainController {
             System.out.println("Empty table created!");
             //tableView.currentPage = 0;
             tableController.viewPage(1, tableView, model);
-
-            if (model.recordList.size() > 10) {
-                tableView.btnNextPage.setEnabled(true);
-                tableView.btnLastPage.setEnabled(true);
-            }
-            tableView.pagingPanel.repaint();
             tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
             tableView.currentPageLabel.setText("Page: " + tableView.currentPage);
+
+            tableView.pagingPanel.repaint();
             view.mainFrame.setTitle(view.title + " - New file");
             //view.pagingPanel.repaint();
 
@@ -134,10 +131,9 @@ public class MainController {
             if (!tableController.tableCreated){
                 JOptionPane.showMessageDialog(new JFrame(), "Create a new table or open an existing one.");
             } else {
-                FindRecordDialog findRecordDialog = new FindRecordDialog(view);;
+                FindRecordDialog findRecordDialog = new FindRecordDialog(view);
                 System.out.println("FindRecordDialog created!");
-                FindRecordController findRecordController = new FindRecordController(view, model, findRecordDialog,
-                        tableView, tableController);
+                FindRecordController findRecordController = new FindRecordController(view, model, findRecordDialog);
                 System.out.println("FindRecordController created!");
             }
         }
@@ -150,10 +146,10 @@ public class MainController {
                 JOptionPane.showMessageDialog(new JFrame(), "Create a new table or open an existing one.");
             } else {
                 DeleteRecordDialog deleteRecordDialog = new DeleteRecordDialog(view);
-                System.out.println("FindRecordDialog created!");
+                System.out.println("DeleteRecordDialog created!");
                 DeleteRecordController deleteRecordController = new DeleteRecordController(view, model, deleteRecordDialog,
                         tableView, tableModel, tableController);
-                System.out.println("FindRecordController created!");
+                System.out.println("DeleteRecordController created!");
                 view.mainFrame.validate();
             }
         }
@@ -194,7 +190,6 @@ public class MainController {
                 tableView.btnNextPage.setEnabled(true);
                 tableView.btnLastPage.setEnabled(true);
             }
-            tableView.pagingPanel.repaint();
             tableView.numberOfRecordsLabel.setText("Records in database: "+model.recordList.size());
             tableView.currentPageLabel.setText("Page: "+tableView.currentPage);
             tableView.pagingPanel.repaint();
