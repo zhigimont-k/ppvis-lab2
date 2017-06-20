@@ -7,6 +7,7 @@ import javax.xml.parsers.SAXParserFactory;
 import com.example.DialogDemo.model.Address;
 import com.example.DialogDemo.model.Database;
 import com.example.DialogDemo.model.StudentRecord;
+import com.example.filechooser.view.FileChooser;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -30,12 +31,9 @@ public class FileOpen {
     public FileOpen(MainWindow mainWindow, Page tableView, Database model){
 
         this.model = model;
-        JFileChooser fileChooser = new JFileChooser();
-        File workingDirectory = new File(System.getProperty("user.dir"));
-        fileChooser.setCurrentDirectory(workingDirectory);
-        fileChooser.setFileFilter(new FileNameExtensionFilter(".xml","xml"));
-        int returnVal = fileChooser.showOpenDialog(null);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.showOpenDialog(null);
+        if (fileChooser.isSelectedFlag()) {
             fileToOpen = fileChooser.getSelectedFile();
         } else
             return;

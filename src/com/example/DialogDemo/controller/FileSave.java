@@ -17,6 +17,7 @@ import javax.swing.JFileChooser;
 
 import com.example.DialogDemo.model.StudentRecord;
 import com.example.DialogDemo.view.MainWindow;
+import com.example.filechooser.view.FileChooser;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -24,36 +25,11 @@ import javax.swing.*;
 
 public class FileSave {
     File fileToSave;
-    JFileChooser fileChooser;
+    FileChooser fileChooser;
     public FileSave(MainWindow mainWindow, List<StudentRecord> recordList) {
-        fileChooser = new JFileChooser(){
-            @Override
-            public void approveSelection(){
-                File f = getSelectedFile();
-
-                if(f.exists() && getDialogType() == SAVE_DIALOG){
-                    int result = JOptionPane.showConfirmDialog(this,
-                            "The file already exists. Replace?","Existing file",JOptionPane.YES_NO_OPTION);
-                    switch(result){
-                        case JOptionPane.YES_OPTION:
-                            super.approveSelection();
-                            return;
-                        case JOptionPane.NO_OPTION:
-                            return;
-                        case JOptionPane.CLOSED_OPTION:
-                            return;
-                    }
-                }
-                super.approveSelection();
-            }
-        };
-        File workingDirectory = new File(System.getProperty("user.dir"));
-        fileChooser.setCurrentDirectory(workingDirectory);
-        fileChooser.setSelectedFile(fileToSave);
-        fileChooser.setFileFilter(new FileNameExtensionFilter(".xml","xml"));
-        int returnVal = fileChooser.showSaveDialog(null);
-
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.showSaveDialog(null);
+        if (fileChooser.isSelectedFlag()) {
             fileToSave = fileChooser.getSelectedFile();
             String fileName = fileToSave.getName();
             if (fileName.length() < 4 || !(fileName.substring(fileName.length() - 4).equals(".xml"))){
